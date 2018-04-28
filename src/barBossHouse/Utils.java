@@ -14,30 +14,8 @@ class UsingString implements OrderPredicate<String> {
     }
 }
 
-class UsingMenuItem implements OrderPredicate<MenuItem> {
-    public boolean test(MenuItem value, MenuItem item) {
-        return value.equals(item);
-    }
-}
-
-class UsingObjectOrder implements OrderPredicate<Object> {
+class UsingObject implements OrderPredicate<Object> {
     public boolean test(MenuItem value, Object o) {
-        return value.equals(o);
-    }
-}
-
-interface OrderManagerPredicate<T> {
-    boolean test(Order value, T t);
-}
-
-class UsingOrder implements OrderManagerPredicate<Order> {
-    public boolean test(Order value, Order order) {
-        return value.equals(order);
-    }
-}
-
-class UsingObjectOrderManager implements OrderManagerPredicate<Object> {
-    public boolean test(Order value, Object o) {
         return value.equals(o);
     }
 }
@@ -85,23 +63,8 @@ class MenuItemCostComparator implements java.util.Comparator<MenuItem> {
 }
 
 class Utils {
-    static private LocalTime PROHIBITION_TIME = LocalTime.of(22, 0);
-
     public static MenuItem[] sortItemsCostDesc(MenuItem[] itemsToSort) {
         Arrays.sort(itemsToSort, new MenuItemCostComparator().reversed());
         return itemsToSort;
-    }
-
-    public static void throwUnlawfulActionException(MenuItem item, int age) {
-        if (item instanceof Drink) {
-            if (((Drink) item).isAlcoholicDrink()) {
-                if (age < 18) {
-                    throw new UnlawfulActionException("Ordering alcoholic drink is prohibited for kids");
-                }
-                if (LocalTime.now().isAfter(PROHIBITION_TIME)) {
-                    throw new UnlawfulActionException("Ordering alcoholic drink is prohibited after 22:00");
-                }
-            }
-        }
     }
 }

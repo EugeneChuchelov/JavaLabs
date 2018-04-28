@@ -1,4 +1,5 @@
 import barBossHouse.*;
+import io.*;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -28,6 +29,13 @@ public class TableOrderTest {
         for(MenuItem item : ord3){
             System.out.println(item.getName());
         }
+
+        ControlledTableOrder cto = new ControlledTableOrder(ord3);
+
+        System.out.println("isChanged "+cto.isChanged());
+        cto.add(dish2);
+        System.out.println("isChanged "+cto.isChanged());
+
         List<MenuItem> lst = new ArrayList<>();
         lst = ord3.subList(2,5);
         //lst.add(dish3);

@@ -1,5 +1,6 @@
 import barBossHouse.*;
 import com.sun.org.apache.xpath.internal.operations.Or;
+import io.ControlledTableOrderManager;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -26,19 +27,23 @@ public class TableOrderManagerTest {
         antOrder.add(dish2);
         antOrder.add(drink);
         InternetOrder intOrder = new InternetOrder();
+        intOrder.setCustomer(cust2);
         intOrder.add(drink);
         intOrder.add(dish2);
         intOrder.setCustomer(cust2);
         TableOrderManager tom = new TableOrderManager(4);
 
-        tom.add(newOrder,0);
-        tom.add(antOrder,2);
-        tom.add(intOrder,1);
-        tom.add(newOrder,3);
+        tom.add(0,newOrder);
+        tom.add(2,antOrder);
+        tom.add(1,intOrder);
+        tom.add(3,newOrder);
         tom.addItem(drink, 2);
         for(Order order : tom){
             System.out.println(order.toString());
         }
+
+        ControlledTableOrderManager ctom  = new ControlledTableOrderManager(4);
+        ctom.add(0,newOrder);
         //System.out.println(tom.removeAll(newOrder));
         //System.out.print("occupiedTableNumbers(): ");
         //for(int g : tom.occupiedTableNumbers()) System.out.print(g + " ");

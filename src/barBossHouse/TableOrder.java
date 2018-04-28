@@ -1,9 +1,10 @@
 package barBossHouse;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
-public class TableOrder implements Order {
+public class TableOrder extends checkUnlawfulAction implements Order{
     private MenuItem[] items;
     private int size;//хранит кол-во items
     private Customer customer;
@@ -17,6 +18,12 @@ public class TableOrder implements Order {
         size = SIZE_DEFAULT;
         customer = CUSTOMER_EMPTY;
         orderDateTime = LocalDateTime.now();
+    }
+    public TableOrder(Order order){
+        items = order.getItems();
+        size = order.size();
+        customer = order.getCustomer();
+        orderDateTime = order.getDateTime();
     }
 
     public TableOrder(int size, Customer customer) {
@@ -78,13 +85,11 @@ public class TableOrder implements Order {
     }
 
     public boolean remove(Object o) {
-        return remove(new UsingObjectOrder(), o, 0) != -1;
+        return remove(new UsingObject(), o, 0) != -1;
     }
 
-    //todo 2 варианта: попробовать здесь дженерики, либо кастовать Object+
+
     public boolean containsAll(Collection<?> c) {
-        //MenuItem[] menuItems = new MenuItem[c.size()];
-        //menuItems = c.toArray(menuItems);
         for (Object o : c) {
             if (!contains(o)) {
                 return false;
@@ -262,7 +267,7 @@ public class TableOrder implements Order {
     //end
 
     public boolean add(MenuItem item) {
-        Utils.throwUnlawfulActionException(item, customer.getAge());
+        checkUnlawfulAction(item, customer);
         if (size < items.length) {
             items[size] = item;
             size++;
@@ -294,7 +299,7 @@ public class TableOrder implements Order {
     }
 
     public boolean remove(MenuItem item) {
-        return remove(new UsingMenuItem(), item, 0) != -1;
+        return remove(new UsingObject(), item, 0) != -1;
     }
 
     //end
@@ -315,7 +320,7 @@ public class TableOrder implements Order {
     }
 
     public int removeAll(MenuItem item) {
-        return removeAll(new UsingMenuItem(), item);
+        return removeAll(new UsingObject(), item);
     }
 
     //end

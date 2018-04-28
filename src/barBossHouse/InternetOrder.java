@@ -1,9 +1,10 @@
 package barBossHouse;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.*;
 
-public class InternetOrder implements Order {
+public class InternetOrder extends checkUnlawfulAction implements Order {
     private int size;
     private ListNode head;
     private ListNode tail;
@@ -13,6 +14,13 @@ public class InternetOrder implements Order {
     public InternetOrder() {
         head = new ListNode();
         orderDateTime = LocalDateTime.now();
+    }
+
+    public InternetOrder(Order order){
+        size = order.size();
+        customer = order.getCustomer();
+        orderDateTime = order.getDateTime();
+        addAll(Arrays.asList(order.getItems()));
     }
 
     public InternetOrder(MenuItem[] items, Customer customer) {
@@ -84,7 +92,7 @@ public class InternetOrder implements Order {
     }
 
     public boolean remove(Object o) {
-        return remove(new UsingObjectOrder(), o, head) != null;
+        return remove(new UsingObject(), o, head) != null;
     }
 
     public boolean containsAll(Collection<?> c) {
@@ -145,7 +153,7 @@ public class InternetOrder implements Order {
     }
 
     public void add(int index, MenuItem item) {
-        Utils.throwUnlawfulActionException(item, customer.getAge());
+        checkUnlawfulAction(item, customer);
         if (index >= size) {
             throw new ArrayIndexOutOfBoundsException("Oversize");
         }
@@ -284,7 +292,7 @@ public class InternetOrder implements Order {
 
 //end
     public boolean add(MenuItem item) {
-        Utils.throwUnlawfulActionException(item, customer.getAge());
+        checkUnlawfulAction(item, customer);
         ListNode node = new ListNode(item);
         if (size == 0) {
             head = node;
@@ -333,7 +341,7 @@ public class InternetOrder implements Order {
     }
 
     public boolean remove(MenuItem item) {
-        return remove(new UsingMenuItem(), item, null) != null;
+        return remove(new UsingObject(), item, null) != null;
     }
 
     //end
@@ -354,7 +362,7 @@ public class InternetOrder implements Order {
     }
 
     public int removeAll(MenuItem item) {
-        return removeAll(new UsingMenuItem(), item);
+        return removeAll(new UsingObject(), item);
     }
 
     //end

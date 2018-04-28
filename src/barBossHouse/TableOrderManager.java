@@ -88,7 +88,14 @@ public class TableOrderManager implements OrdersManager, List<Order> {
     }
 
     public boolean remove(Object o) {
-        return remove((Order) o) != -1;
+        int i;
+        for (i = 0; i < orders.length; i++) {
+            if (orders[i] != null && orders[i].equals(o)) {
+                orders[i] = null;
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean containsAll(Collection<?> c) {
@@ -273,17 +280,17 @@ public class TableOrderManager implements OrdersManager, List<Order> {
 
 //end
 
-    public void add(Order order, int tableNumber) throws AlreadyAddedException {
+    /*public void add(Order order, int tableNumber) throws AlreadyAddedException {
         if (orders[tableNumber] != null) {
             throw new AlreadyAddedException("Table already occupied");
         }
 
         orders[tableNumber] = order;
-    }
+    }*/
 
-    public Order getOrder(int tableNumber) {
+    /*public Order getOrder(int tableNumber) {
         return orders[tableNumber];
-    }
+    }*/
 
     public void addItem(MenuItem item, int tableNumber) {
         orders[tableNumber].add(item);
@@ -293,7 +300,7 @@ public class TableOrderManager implements OrdersManager, List<Order> {
     {
         orders[tableNumber] = null;
     }*/
-    public int remove(Order order) {
+    /*public int remove(Order order) {
         int i;
         for (i = 0; i < orders.length; i++) {
             if (orders[i] != null && orders[i].equals(order)) {
@@ -302,15 +309,16 @@ public class TableOrderManager implements OrdersManager, List<Order> {
             }
         }
         return -1;
-    }
+    }*/
 
     public int removeAll(Order order) {
-        int removedCount = 0, tableNumber;
+        boolean isRemoved;
+        int removedCount = 0;
         do {
-            tableNumber = remove(order);
-            if (tableNumber != -1) removedCount++;
+            isRemoved = remove(order);
+            if (isRemoved) removedCount++;
         }
-        while (tableNumber != -1);
+        while (isRemoved);
         if (removedCount == 0) return -1;
         else return removedCount;
     }
@@ -438,7 +446,7 @@ public class TableOrderManager implements OrdersManager, List<Order> {
         return output.toString();
     }
 
-    private int orderQuantity(Order order) {
+    public int orderQuantity(Order order) {
         int quantity = 0;
         for (int i = 0; i < orders.length; i++) {
             if (orders[i] != null && orders[i].equals(order)) quantity++;
