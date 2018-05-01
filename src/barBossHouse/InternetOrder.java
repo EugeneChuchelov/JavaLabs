@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-public class InternetOrder extends checkUnlawfulAction implements Order {
+public class InternetOrder extends checkUnlawfulAction implements Order, java.io.Serializable{
     private int size;
     private ListNode head;
     private ListNode tail;
@@ -14,10 +14,16 @@ public class InternetOrder extends checkUnlawfulAction implements Order {
     public InternetOrder() {
         head = new ListNode();
         orderDateTime = LocalDateTime.now();
+        //в одну милисекунду может создаваться несколько заказов, приходится ждать до следующей
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public InternetOrder(Order order){
-        size = order.size();
+        //size = order.size();
         customer = order.getCustomer();
         orderDateTime = order.getDateTime();
         addAll(Arrays.asList(order.getItems()));
@@ -28,6 +34,11 @@ public class InternetOrder extends checkUnlawfulAction implements Order {
         orderDateTime = LocalDateTime.now();
         head = new ListNode();
         addAll(Arrays.asList(items));
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     private class ListNode {
@@ -292,7 +303,7 @@ public class InternetOrder extends checkUnlawfulAction implements Order {
 
 //end
     public boolean add(MenuItem item) {
-        checkUnlawfulAction(item, customer);
+        //checkUnlawfulAction(item, customer);
         ListNode node = new ListNode(item);
         if (size == 0) {
             head = node;
@@ -470,6 +481,10 @@ public class InternetOrder extends checkUnlawfulAction implements Order {
     //Возвращает массив элементов, отсортированный по уменьшению цены
     public MenuItem[] sortedItemsByCostDesc() {
         return Utils.sortItemsCostDesc(getItems());
+    }
+
+    public String getType(){
+        return "InternetOrder";
     }
 
     public String toString() {

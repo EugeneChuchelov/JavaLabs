@@ -1,6 +1,6 @@
 package barBossHouse;
 
-public final class Address {
+public final class Address implements java.io.Serializable {
     private final String cityName;
     private final int zipCode;
     private final String streetName;

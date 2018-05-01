@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
-public class TableOrder extends checkUnlawfulAction implements Order{
+public class TableOrder extends checkUnlawfulAction implements Order, java.io.Serializable{
     private MenuItem[] items;
     private int size;//хранит кол-во items
     private Customer customer;
@@ -18,6 +18,12 @@ public class TableOrder extends checkUnlawfulAction implements Order{
         size = SIZE_DEFAULT;
         customer = CUSTOMER_EMPTY;
         orderDateTime = LocalDateTime.now();
+        //в одну милисекунду может создаваться несколько заказов, приходится ждать до следующей
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
     public TableOrder(Order order){
         items = order.getItems();
@@ -35,6 +41,11 @@ public class TableOrder extends checkUnlawfulAction implements Order{
         this.size = SIZE_DEFAULT;
         this.customer = customer;
         orderDateTime = LocalDateTime.now();
+        try {
+            Thread.sleep(1);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     public TableOrder(MenuItem[] items, Customer customer) {
@@ -267,7 +278,7 @@ public class TableOrder extends checkUnlawfulAction implements Order{
     //end
 
     public boolean add(MenuItem item) {
-        checkUnlawfulAction(item, customer);
+        //checkUnlawfulAction(item, customer);
         if (size < items.length) {
             items[size] = item;
             size++;
@@ -400,6 +411,10 @@ public class TableOrder extends checkUnlawfulAction implements Order{
     //Возвращает массив элементов, отсортированный по уменьшению цены
     public MenuItem[] sortedItemsByCostDesc() {
         return Utils.sortItemsCostDesc(getItems());
+    }
+
+    public String getType(){
+        return "TableOrder";
     }
 
     public String toString() {

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Period;
 
-public final class Customer {
+public final class Customer implements java.io.Serializable {
     private final String firstName;
     private final String secondName;
     private final LocalDate birthDate;
@@ -50,6 +50,12 @@ public final class Customer {
 
     public LocalDate getBirthDate() {
         return birthDate;
+    }
+
+    public static Customer parseCustomer(String string){
+        String[] fields = string.split(";");
+        Address address = new Address(fields[5], Integer.parseInt(fields[6]), fields[7].charAt(0), Integer.parseInt(fields[8]), fields[3], Integer.parseInt(fields[4]));
+        return new Customer(fields[1], fields[0], LocalDate.parse(fields[2]), address);
     }
 
     public String toString() {

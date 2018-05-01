@@ -1,6 +1,13 @@
 import barBossHouse.*;
+import io.ControlledInternetOrderManager;
+import io.OrderManagerTextFileSource;
+import io.Source;
+
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,6 +46,27 @@ public class InternetOrderTest {
             System.out.println(item.getName());
         }
         System.out.println("\nEnd of list things test");
+        try {
+            PrintWriter writer = new PrintWriter("F:\\Documents\\GitHub\\JavaLabs\\src\\" + ord3.getDateTime().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() + ".txt");
+            writer.println(ord3.getType());
+            writer.println(ord3.getCustomer().toString());
+            writer.println(ord3.getCustomer().getAddress().toString());
+            writer.println(ord3.size());
+            for(MenuItem menuItem : ord3){
+                writer.println(menuItem.toString());
+            }
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        ord1.add(drink3);
+        Source<Order> src = new OrderManagerTextFileSource();
+        ((OrderManagerTextFileSource) src).setPath("F:\\Documents\\GitHub\\JavaLabs\\tests\\");
+        ord1.setCustomer(cust3);
+        ControlledInternetOrderManager ciom = new ControlledInternetOrderManager();
+        ciom.setSource(src);
+        ciom.add(ord1);
+        ciom.add(ord3);
         /*ord1.add(dish2);
         ord1.add(dish2);
         ord1.add(dish1);

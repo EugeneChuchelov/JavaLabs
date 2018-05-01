@@ -5,8 +5,6 @@ import java.util.List;
 
 public interface Order extends List<MenuItem> {
 
-    //todo: перенести+
-
     boolean add(MenuItem item);
 
     String[] itemsNames();
@@ -39,9 +37,10 @@ public interface Order extends List<MenuItem> {
 
     void setCustomer(Customer customer);
 
+    String getType();
+
     String toString();
 
-    //boolean isItemsEqual(Order comparedOrder);
     boolean equals(Object obj);
 
     boolean customerAndDateEquals(Order order);

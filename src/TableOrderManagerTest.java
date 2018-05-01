@@ -1,12 +1,14 @@
 import barBossHouse.*;
-import com.sun.org.apache.xpath.internal.operations.Or;
-import io.ControlledTableOrderManager;
+import io.*;
 
-import java.time.LocalDate;
-import java.time.Month;
+import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.time.*;
+import java.util.Scanner;
 
 public class TableOrderManagerTest {
-    public static void main(String[] args) throws AlreadyAddedException{
+    public static void main(String[] args) throws AlreadyAddedException, IOException {
         Dish dish = new Dish("Sacra", "test", 35);
         Dish dish2 = new Dish("Glara", "Dwsf", 99.99);
         Drink drink = new Drink("Klig", DrinkTypeEnum.WHISKEY, "noIce", 520, 15);
@@ -38,21 +40,48 @@ public class TableOrderManagerTest {
         tom.add(1,intOrder);
         tom.add(3,newOrder);
         tom.addItem(drink, 2);
+        String file = newOrder.getDateTime().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() + ".bin";
         for(Order order : tom){
             System.out.println(order.toString());
         }
-
-        ControlledTableOrderManager ctom  = new ControlledTableOrderManager(4);
-        ctom.add(0,newOrder);
-        //System.out.println(tom.removeAll(newOrder));
-        //System.out.print("occupiedTableNumbers(): ");
-        //for(int g : tom.occupiedTableNumbers()) System.out.print(g + " ");
-        //System.out.println();
-        //for (Order ord : tom.getOrders()) System.out.println(ord.toString());
-        //System.out.println(tom.toString());
-        /*Order[] das = tom.getCustomerOrders(cust2);
-        for(Order order : das){
-            System.out.println(order.toString());
+        /*try {
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("F:\\Documents\\GitHub\\JavaLabs\\tests\\" + file));
+            out.writeObject(newOrder);
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Order fdl;
+        try {
+            ObjectInputStream in = new ObjectInputStream(new
+                    FileInputStream("F:\\Documents\\GitHub\\JavaLabs\\tests\\" + file));
+            fdl = (Order) in.readObject();
+            in.close();
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        }
+        catch(ClassNotFoundException e) {
+            System.out.println("Wrong object type");
         }*/
+
+        Source<Order> src = new OrderManagerSerializedFileSource();
+        //Source<Order> src = new OrderManagerBinaryFileSource();
+        ((OrderManagerSerializedFileSource) src).setPath("F:\\Documents\\GitHub\\JavaLabs\\tests\\");
+        ControlledTableOrderManager ctom = new ControlledTableOrderManager(4);
+        ctom.setSource(src);
+        ctom.add(0,newOrder);
+        ctom.add(2,antOrder);
+        ctom.add(1,intOrder);
+        ctom.addItem(dish2,0);
+        ctom.addItem(drink,0);
+        ctom.remove(2);
+        ctom.remove(intOrder);
+        /*create(newOrder);
+        create(antOrder);
+        create(intOrder);
+        newOrder.add(dish2);
+        newOrder.add(dish);
+        create(newOrder);*/
     }
 }

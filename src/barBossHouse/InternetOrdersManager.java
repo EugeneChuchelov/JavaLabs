@@ -525,7 +525,7 @@ public class InternetOrdersManager implements OrdersManager, Deque<Order> {
         return output.toString();
     }
 
-    private int orderQuantity(Order order) {
+    public int orderQuantity(Order order) {
         QueueNode node = head;
         int quantity = 0;
         while (node != null) {

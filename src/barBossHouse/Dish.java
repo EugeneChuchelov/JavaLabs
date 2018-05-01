@@ -1,6 +1,6 @@
 package barBossHouse;
 
-public class Dish extends MenuItem {
+public class Dish extends MenuItem implements java.io.Serializable {
     public Dish(String name, String description) {
         super(name, description);
     }

@@ -1,6 +1,6 @@
 package barBossHouse;
 
-public class Drink extends MenuItem implements Alcoholable {
+public class Drink extends MenuItem implements Alcoholable, java.io.Serializable {
     private double alcoholVol;
     private DrinkTypeEnum type;
     public static final double ALCOHOL_DEFAULT = 0;

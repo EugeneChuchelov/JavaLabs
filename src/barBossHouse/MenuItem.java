@@ -7,6 +7,8 @@ public abstract class MenuItem implements Comparable<MenuItem> {
     public static final int COST_DEFAULT = 0;
     public static final String NAME_EMPTY = "";
 
+    protected MenuItem(){}
+
     protected MenuItem(String name, String description) {
         this(name, description, COST_DEFAULT);
     }
@@ -30,6 +32,17 @@ public abstract class MenuItem implements Comparable<MenuItem> {
 
     public String getDescription() {
         return description;
+    }
+
+    public static MenuItem parseMenuItem(String string){
+        String[] fields = string.split(";");
+        MenuItem item;
+        if(fields.length == 3){
+            item = new Dish(fields[0], fields[2], Double.parseDouble(fields[1]));
+        } else {
+            item = new Drink(fields[0], DrinkTypeEnum.valueOf(fields[3]), fields[2], Double.parseDouble(fields[1]), Double.parseDouble(fields[4]));
+        }
+        return item;
     }
 
     public String toString() {

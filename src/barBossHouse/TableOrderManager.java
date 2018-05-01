@@ -33,13 +33,21 @@ public class TableOrderManager implements OrdersManager, List<Order> {
 
     //методы из List
     public boolean add(Order order) {
+        /*if(size() == 0){
+            orders[0] = order;
+        }
         for (int i = 0; i < size(); i++) {
             if (orders[i] == null) {
                 orders[i] = order;
                 return true;
             }
         }
-        return false;
+        return false;*/
+        if(size() >= orders.length){
+            return false;
+        }
+        orders[size()] = order;
+        return true;
     }
 
     public int size() {

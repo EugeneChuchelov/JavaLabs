@@ -2,6 +2,7 @@ package io;
 
 import barBossHouse.*;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class ControlledTableOrderManager extends TableOrderManager{
@@ -20,62 +21,95 @@ public class ControlledTableOrderManager extends TableOrderManager{
         this.source = source;
     }
 
-    /*public void store(){
-        for(Order order : super){
-            
+    public void store(){
+        for(Order order : super.getOrders()){
+            if(((ControlledTableOrder)order).isChanged){
+                source.store(order);
+            }
         }
-    }*/
+    }
+
+    public void load(){
+        for(Order order : super.getOrders()){
+            source.load(order);
+        }
+    }
+
+    @Override
+    public void clear() {
+        for(Order order : super.getOrders()){
+            source.delete(order);
+        }
+        super.clear();
+    }
+
+    @Override
+    public void addItem(MenuItem item, int tableNumber) {
+        super.addItem(item, tableNumber);
+        source.store(super.get(tableNumber));
+    }
 
     @Override
     public boolean add(Order order) {
-        source.create(new ControlledTableOrder(order));
-        return super.add(order);
+        ControlledTableOrder controlledTableOrder = new ControlledTableOrder(order);
+        source.create(controlledTableOrder);
+        return super.add(controlledTableOrder);
     }
 
     @Override
     public void add(int index, Order order) {
-        source.create(new ControlledTableOrder(order));
-        super.add(index, order);
+        ControlledTableOrder controlledTableOrder = new ControlledTableOrder(order);
+        source.create(controlledTableOrder);
+        super.add(index, controlledTableOrder);
     }
 
     @Override
     public boolean addAll(Collection<? extends Order> c) {
+        ArrayList<ControlledTableOrder> list = new ArrayList<>();
+        ControlledTableOrder controlledTableOrder;
         for(Order order : c){
-            source.create(new ControlledTableOrder(order));
+            controlledTableOrder = new ControlledTableOrder(order);
+            list.add(controlledTableOrder);
+            source.create(controlledTableOrder);
         }
-        return super.addAll(c);
+        return super.addAll(list);
     }
 
     @Override
     public boolean addAll(int index, Collection<? extends Order> c) {
+        ArrayList<ControlledTableOrder> list = new ArrayList<>();
+        ControlledTableOrder controlledTableOrder;
         for(Order order : c){
-            source.create(new ControlledTableOrder(order));
+            controlledTableOrder = new ControlledTableOrder(order);
+            list.add(controlledTableOrder);
+            source.create(controlledTableOrder);
         }
-        return super.addAll(index, c);
+        return super.addAll(index, list);
     }
 
     @Override
     public Order set(int index, Order element) {
-        source.create(new ControlledTableOrder(element));
-        return super.set(index, element);
+        ControlledTableOrder controlledTableOrder = new ControlledTableOrder(element);
+        source.create(controlledTableOrder);
+        return super.set(index, controlledTableOrder);
     }
 
     @Override
     public boolean remove(Object o) {
-        source.delete(new ControlledTableOrder((Order) o));
+        source.delete((Order) o);
         return super.remove(o);
     }
 
     @Override
     public Order remove(int index) {
-        source.delete(new ControlledTableOrder(super.get(index)));
+        source.delete(super.get(index));
         return super.remove(index);
     }
 
     @Override
     public boolean removeAll(Collection<?> c) {
         for(Object o : c){
-            source.create(new ControlledTableOrder((Order) o));
+            source.delete((Order) o);
         }
         return super.removeAll(c);
     }
@@ -83,14 +117,20 @@ public class ControlledTableOrderManager extends TableOrderManager{
     @Override
     public int removeAll(Order order) {
         for (int i = 0; i < super.orderQuantity(order); i++){
-            source.delete(new ControlledTableOrder(order));
+            source.delete(order);
         }
         return super.removeAll(order);
     }
 
     @Override
     public boolean retainAll(Collection<?> c) {
-        //todo: Think out something
+        for(Order order : super.getOrders()){
+            if (!c.contains(order)) {
+                for(int i = 0; i < super.orderQuantity(order); i++){
+                    source.delete(order);
+                }
+            }
+        }
         return super.retainAll(c);
     }
 }
