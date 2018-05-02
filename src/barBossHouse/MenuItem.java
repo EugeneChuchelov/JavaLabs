@@ -1,13 +1,15 @@
 package barBossHouse;
 
-public abstract class MenuItem implements Comparable<MenuItem> {
-    private double cost;
-    private String name;
-    private String description;
+public abstract class MenuItem implements Comparable<MenuItem>, java.io.Serializable {
+    private final double cost;
+    private final String name;
+    private final String description;
     public static final int COST_DEFAULT = 0;
     public static final String NAME_EMPTY = "";
 
-    protected MenuItem(){}
+    protected MenuItem(){
+        this(NAME_EMPTY, NAME_EMPTY, COST_DEFAULT);
+    }
 
     protected MenuItem(String name, String description) {
         this(name, description, COST_DEFAULT);

@@ -13,7 +13,7 @@ public class ControlledInternetOrderManager extends InternetOrdersManager{
 
     }
 
-    public ControlledInternetOrderManager(Order[] orders) throws AlreadyAddedException{
+    public ControlledInternetOrderManager(Order[] orders){
         super(orders);
     }
 

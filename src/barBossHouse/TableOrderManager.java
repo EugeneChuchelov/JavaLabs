@@ -33,16 +33,6 @@ public class TableOrderManager implements OrdersManager, List<Order> {
 
     //методы из List
     public boolean add(Order order) {
-        /*if(size() == 0){
-            orders[0] = order;
-        }
-        for (int i = 0; i < size(); i++) {
-            if (orders[i] == null) {
-                orders[i] = order;
-                return true;
-            }
-        }
-        return false;*/
         if(size() >= orders.length){
             return false;
         }
@@ -288,36 +278,9 @@ public class TableOrderManager implements OrdersManager, List<Order> {
 
 //end
 
-    /*public void add(Order order, int tableNumber) throws AlreadyAddedException {
-        if (orders[tableNumber] != null) {
-            throw new AlreadyAddedException("Table already occupied");
-        }
-
-        orders[tableNumber] = order;
-    }*/
-
-    /*public Order getOrder(int tableNumber) {
-        return orders[tableNumber];
-    }*/
-
     public void addItem(MenuItem item, int tableNumber) {
         orders[tableNumber].add(item);
     }
-
-    /*public void remove(int tableNumber)
-    {
-        orders[tableNumber] = null;
-    }*/
-    /*public int remove(Order order) {
-        int i;
-        for (i = 0; i < orders.length; i++) {
-            if (orders[i] != null && orders[i].equals(order)) {
-                orders[i] = null;
-                return i;
-            }
-        }
-        return -1;
-    }*/
 
     public int removeAll(Order order) {
         boolean isRemoved;

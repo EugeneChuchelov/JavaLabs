@@ -14,7 +14,7 @@ public class InternetOrdersManager implements OrdersManager, Deque<Order> {
     public InternetOrdersManager() {
     }
 
-    public InternetOrdersManager(Order[] orders) throws AlreadyAddedException {
+    public InternetOrdersManager(Order[] orders) {
         head = new QueueNode();
         addAll(Arrays.asList(orders));
     }
@@ -407,6 +407,7 @@ public class InternetOrdersManager implements OrdersManager, Deque<Order> {
         }
         return tail;
     }
+
     private void removeAll(Object o) {
         QueueNode returnedNode = null;
         do {
@@ -414,15 +415,7 @@ public class InternetOrdersManager implements OrdersManager, Deque<Order> {
         }
         while (returnedNode != tail);
     }
-    /*public Order getFirst(){
-        return head.value;
-    }
-    public Order getFirstAndRemove(){
-        QueueNode node = head;
-        head = head.next;
-        size--
-        return node.value;
-    }*/
+
     public int ordersQuantity() {
         return size;
     }

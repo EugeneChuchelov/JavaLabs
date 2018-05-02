@@ -12,7 +12,10 @@ public class OrderManagerSerializedFileSource extends OrderManagerFileSource {
             ObjectInputStream in = new ObjectInputStream(new FileInputStream(getPath() + menuItems.getDateTime().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() + ".bin"));
             Order order = (Order) in.readObject();
             in.close();
-            menuItems = order;
+            menuItems.setCustomer(order.getCustomer());
+            menuItems.setDateTime(order.getDateTime());
+            menuItems.clear();
+            menuItems.addAll(order);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

@@ -73,7 +73,8 @@ public final class Address implements java.io.Serializable {
         if (zipCode != NUMBER_EMPTY) output.append(zipCode).append(", ");
         if (!streetName.equals(NAME_EMPTY)) output.append(streetName).append(" ");
         if (buildingNumber != NUMBER_EMPTY) output.append(buildingNumber);
-        if (buildingLetter != LETTER_DEFAULT) output.append(buildingLetter).append("-");
+        if (buildingLetter != LETTER_DEFAULT) output.append(buildingLetter);
+        output.append("-");
         if (appartmentNumber != NUMBER_EMPTY) output.append(appartmentNumber);
         return output.toString();
     }

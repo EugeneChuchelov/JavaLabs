@@ -10,9 +10,7 @@ public class OrderManagerBinaryFileSource extends OrderManagerFileSource {
     @Override
     public void load(Order menuItems) {
         DataInputStream stream;
-        //File file = new File(getPath());
         Order order = new TableOrder();
-        //String fileName = menuItems.getDateTime().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() + ".bin";
         try {
             stream = new DataInputStream(new FileInputStream(getPath() + menuItems.getDateTime().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() + ".bin"));
             int size;
@@ -34,33 +32,10 @@ public class OrderManagerBinaryFileSource extends OrderManagerFileSource {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        menuItems = order;
-        /*for(String name : file.list()) {
-            if (name.equals(fileName)) {
-                try {
-                    stream = new DataInputStream(new FileInputStream(getPath() + name));
-                    int size;
-                    if(stream.readUTF().equals("TableOrder")){
-                        size = stream.readInt();
-                        order = new TableOrder(size, Customer.parseCustomer(stream.readUTF()));
-                        order.setDateTime(LocalDateTime.parse(stream.readUTF()));
-                    } else {
-                        order = new InternetOrder();
-                        size = stream.readInt();
-                        order.setCustomer(Customer.parseCustomer(stream.readUTF()));
-                        order.setDateTime(LocalDateTime.parse(stream.readUTF()));
-                    }
-                    for(int i = 0; i < size; i++){
-                        order.add(MenuItem.parseMenuItem(stream.readUTF()));
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                menuItems = order;
-            }
-        }*/
+        menuItems.setCustomer(order.getCustomer());
+        menuItems.setDateTime(order.getDateTime());
+        menuItems.clear();
+        menuItems.addAll(order);
     }
 
     @Override
@@ -72,14 +47,6 @@ public class OrderManagerBinaryFileSource extends OrderManagerFileSource {
     public void delete(Order menuItems) {
         File file = new File(getPath() + menuItems.getDateTime().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() + ".bin");
         file.delete();
-        /*File file = new File(getPath());
-        String fileName = menuItems.getDateTime().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() + ".bin";
-        for(String name : file.list()) {
-            if (name.equals(fileName)) {
-                file = new File(getPath() + fileName);
-                file.delete();
-            }
-        }*/
     }
 
     @Override

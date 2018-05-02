@@ -52,6 +52,9 @@ public class TableOrderTest {
             System.out.println(item.getName());
         }
         System.out.println("\nEnd of list things test");
+
+        OrdersFactory factory = OrdersFactory.getOrdersFactory(OrdersFactoryTypesEnumeration.ORDINARY_ORDERS_FACTORY);
+        Order q = factory.createTableOrder(8, cust2);
         /*System.out.println(ord2.toString());
         ord2.remove("Lahe");
         System.out.println(ord2.toString());

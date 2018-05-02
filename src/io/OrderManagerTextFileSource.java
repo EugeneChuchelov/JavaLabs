@@ -5,7 +5,6 @@ import barBossHouse.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Scanner;
@@ -14,9 +13,7 @@ public class OrderManagerTextFileSource extends OrderManagerFileSource {
     @Override
     public void load(Order menuItems) {
         Scanner scanner;
-        //File file = new File(getPath());
         Order order = new TableOrder();
-        //String fileName = menuItems.getDateTime().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() + ".txt";
         try {
             scanner = new Scanner(new File(getPath() + menuItems.getDateTime().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() + ".txt"));
             if(scanner.nextLine().equals("TableOrder")){
@@ -34,29 +31,10 @@ public class OrderManagerTextFileSource extends OrderManagerFileSource {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        menuItems = order;
-        /*for(String name : file.list()){
-            if(name.equals(fileName)){
-                try {
-                    scanner = new Scanner(new File(getPath() + name));
-                    if(scanner.nextLine().equals("TableOrder")){
-                        order = new TableOrder(Integer.parseInt(scanner.nextLine()), Customer.parseCustomer(scanner.nextLine()));
-                        order.setDateTime(LocalDateTime.parse(scanner.nextLine()));
-                    } else {
-                        order = new InternetOrder();
-                        scanner.nextLine();
-                        order.setCustomer(Customer.parseCustomer(scanner.nextLine()));
-                        order.setDateTime(LocalDateTime.parse(scanner.nextLine()));
-                    }
-                    while(scanner.hasNextLine()){
-                        order.add(MenuItem.parseMenuItem(scanner.nextLine()));
-                    }
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                }
-                menuItems = order;
-            }
-        }*/
+        menuItems.setCustomer(order.getCustomer());
+        menuItems.setDateTime(order.getDateTime());
+        menuItems.clear();
+        menuItems.addAll(order);
     }
 
     @Override
@@ -66,16 +44,8 @@ public class OrderManagerTextFileSource extends OrderManagerFileSource {
 
     @Override
     public void delete(Order menuItems) {
-        //File file = new File(getPath());
         File file = new File(getPath() + menuItems.getDateTime().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() + ".txt");
         file.delete();
-        /*String fileName = menuItems.getDateTime().toInstant(ZoneOffset.ofTotalSeconds(0)).toEpochMilli() + ".txt";
-        for(String name : file.list()) {
-            if (name.equals(fileName)) {
-                file = new File(getPath() + fileName);
-                file.delete();
-            }
-        }*/
     }
 
     @Override

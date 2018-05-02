@@ -148,6 +148,7 @@ public class TableOrder extends checkUnlawfulAction implements Order, java.io.Se
 
     public void clear() {
         items = new MenuItem[ARRAY_LENGTH_DEFAULT];
+        size = 0;
     }
 
     public MenuItem get(int index) {

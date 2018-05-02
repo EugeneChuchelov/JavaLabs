@@ -150,6 +150,7 @@ public class InternetOrder extends checkUnlawfulAction implements Order, java.io
     public void clear() {
         head = new ListNode();
         tail = null;
+        size = 0;
     }
 
     public MenuItem get(int index) {
